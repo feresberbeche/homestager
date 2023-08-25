@@ -31,3 +31,11 @@ export interface Post {
   updated_at: string
   author_id: string
 }
+
+export interface Ad {
+  id: string /* primary key */
+  name: string
+  created_at: string
+  updated_at: string
+  user_id: string
+}

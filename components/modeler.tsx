@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Post } from "@/types/main"
+import { Ad } from "@/types/main"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -17,11 +17,11 @@ import { buttonVariants } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-
+import TextareaAutosize from "react-textarea-autosize"
 
 type FormData = z.infer<typeof postPatchSchema>
 
-export function Modeler({ user, post }) {
+export function Modeler({ user, ad }) {
   const { register, handleSubmit } = useForm<FormData>({
     resolver: zodResolver(postPatchSchema),
   })
@@ -92,9 +92,6 @@ export function Modeler({ user, post }) {
                 Back
               </>
             </Link>
-            <p className="text-sm text-muted-foreground">
-              {post.published ? "Published" : "Draft"}
-            </p>
           </div>
           <button type="submit" className={cn(buttonVariants())}>
             {isSaving && (
@@ -102,6 +99,16 @@ export function Modeler({ user, post }) {
             )}
             <span>Save</span>
           </button>
+        </div>
+        <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert">
+          <TextareaAutosize
+            autoFocus
+            id="title"
+            defaultValue={ad.name}
+            placeholder="Post title"
+            className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
+            {...register("title")}
+          />
         </div>
         <div className="prose prose-stone mx-auto dark:prose-invert">
           <div className="grid w-full lg:max-w-sm items-center gap-1.5">

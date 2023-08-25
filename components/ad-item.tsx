@@ -1,37 +1,37 @@
 import Link from "next/link"
 
-import { Post } from "@/types/main"
+import { Ad } from "@/types/main"
 import { formatDate } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
-import { PostOperations } from "@/components/post-operations"
+import { AdOperations } from "@/components/ad-operations"
 import { add } from "date-fns/esm"
 
-interface PostItemProps {
-  post: Pick<Post, "id" | "title" | "published" | "created_at">
+interface AdItemProps {
+  ad: Pick<Ad, "id" | "name" | "created_at">
 }
 
-export function PostItem({ post }: PostItemProps) {
+export function AdItem({ ad }: AdItemProps) {
   return (
     <div className="flex items-center justify-between p-4">
       <div className="grid gap-1">
         <Link
-          href={`/stager/${post.id}`}
+          href={`/stager/${ad.id}`}
           className="font-semibold hover:underline"
         >
-          {post.title}
+          {ad.name}
         </Link>
         <div>
           <p className="text-sm text-muted-foreground">
-            {formatDate(new Date(post.created_at).toDateString())}
+            {formatDate(new Date(ad.created_at).toDateString())}
           </p>
         </div>
       </div>
-      <PostOperations post={{ id: post.id, title: post.title }} />
+      <AdOperations ad={{ id: ad.id, name: ad.name }} />
     </div>
   )
 }
 
-PostItem.Skeleton = function PostItemSkeleton() {
+AdItem.Skeleton = function AdItemSkeleton() {
   return (
     <div className="p-4">
       <div className="space-y-3">

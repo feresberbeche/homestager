@@ -1,7 +1,7 @@
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
-import { PostCreateButton } from "@/components/post-create-button"
-import { PostItem } from "@/components/post-item"
+import { AdCreateButton } from "@/components/ad-create-button"
+import { AdItem } from "@/components/ad-item"
 import { DashboardShell } from "@/components/shell"
 import { createServerSupabaseClient } from "@/app/supabase-server"
 
@@ -12,31 +12,31 @@ export const metadata = {
 export default async function DashboardPage() {
   const supabase = createServerSupabaseClient()
 
-  const { data: posts } = await supabase
-    .from("posts")
-    .select("id, title, published, created_at")
+  const { data: ads } = await supabase
+    .from("ads")
+    .select("id, name, created_at")
     .order("updated_at", { ascending: false })
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Posts" text="Create and manage posts.">
-        <PostCreateButton />
+      <DashboardHeader heading="Ads" text="Create and manage ads.">
+        <AdCreateButton />
       </DashboardHeader>
       <div>
-        {posts?.length ? (
+        {ads?.length ? (
           <div className="divide-y divide-border rounded-md border">
-            {posts.map((post) => (
-              <PostItem key={post.id} post={post} />
+            {ads.map((ad) => (
+              <AdItem key={ad.id} ad={ad} />
             ))}
           </div>
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Title>No ads created</EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
-              You don&apos;t have any posts yet. Start creating content.
+              You don&apos;t have any ads yet. Start creating content.
             </EmptyPlaceholder.Description>
-            <PostCreateButton variant="outline" />
+            <AdCreateButton variant="outline" />
           </EmptyPlaceholder>
         )}
       </div>

@@ -46,13 +46,13 @@ export async function getUser() {
   }
 }
 
-export async function getPostForUser(postId: Post["id"], userId: User["id"]) {
+export async function getAdForUser(adId: Post["id"], userId: User["id"]) {
   const supabase = createServerSupabaseClient()
   const { data } = await supabase
-    .from("posts")
+    .from("ads")
     .select("*")
-    .eq("id", postId)
-    .eq("author_id", userId)
+    .eq("id", adId)
+    .eq("user_id", userId)
     .single()
   return data ? { ...data, content: data.content as unknown as JSON } : null
 }
