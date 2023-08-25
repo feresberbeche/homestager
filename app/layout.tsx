@@ -72,6 +72,7 @@ export const metadata = {
   manifest: `${siteConfig.url}/site.webmanifest`,
 }
 
+export const dynamic = 'force-dynamic'
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>

@@ -7,10 +7,10 @@ export const env = createEnv({
     // See https://next-auth.js.org/deployment.
     NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
     NEXT_PUBLIC_SUPABASE_URL: z.string().url().min(1),
-    STRIPE_API_KEY: z.string().min(1),
-    STRIPE_WEBHOOK_SECRET: z.string().min(1),
-    STRIPE_PRO_MONTHLY_PLAN_ID: z.string().min(1),
-    GITHUB_ACCESS_TOKEN: z.string().min(1),
+    // STRIPE_API_KEY: z.string().min(1),
+    // STRIPE_WEBHOOK_SECRET: z.string().min(1),
+    // STRIPE_PRO_MONTHLY_PLAN_ID: z.string().min(1),
+    // GITHUB_ACCESS_TOKEN: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1),
@@ -18,10 +18,10 @@ export const env = createEnv({
   runtimeEnv: {
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    STRIPE_API_KEY: process.env.STRIPE_API_KEY,
-    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
-    STRIPE_PRO_MONTHLY_PLAN_ID: process.env.STRIPE_PRO_MONTHLY_PLAN_ID,
+    // STRIPE_API_KEY: process.env.STRIPE_API_KEY,
+    // STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    // STRIPE_PRO_MONTHLY_PLAN_ID: process.env.STRIPE_PRO_MONTHLY_PLAN_ID,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-    GITHUB_ACCESS_TOKEN: process.env.GITHUB_ACCESS_TOKEN,
+    // GITHUB_ACCESS_TOKEN: process.env.GITHUB_ACCESS_TOKEN,
   },
 })

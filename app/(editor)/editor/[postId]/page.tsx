@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation"
 
-import { Editor } from "@/components/editor"
+import { Modeler } from "@/components/modeler"
 import { getPostForUser, getUser } from "@/app/supabase-server"
 
 interface EditorPageProps {
@@ -21,7 +21,8 @@ export default async function EditorPage({ params }: EditorPageProps) {
   }
 
   return (
-    <Editor
+    <Modeler
+      user={user}
       post={{
         id: post.id,
         title: post.title,
