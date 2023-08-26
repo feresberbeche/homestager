@@ -66,12 +66,19 @@ export async function getRoomsForAd(adId: Ad["id"], userId: User["id"]) {
       limit: 100,
       offset: 0,
     })
-  return data ? data : null
+  let roomsEnriched: Array<any> = []
+  if (data) {
+    roomsEnriched = await Promise.all(data.map(async room => ({ ...room, url: await getRoomUrl(userId + '/' + adId + '/' + room.name) })))
+  }
+  return roomsEnriched ? roomsEnriched : null
 }
 
-
-export async function getRoomUrl(adId: Ad["id"], userId: User["id"]) {
+export async function getRoomUrl(path: string) {
   const supabase = createServerSupabaseClient()
-  //TODO
-}
+  const { data } = await supabase
+    .storage
+    .from('rooms')
+    .createSignedUrl(path, 60);
 
+  return data ? data.signedUrl : null
+}

@@ -6,7 +6,7 @@ import "./env.mjs"
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com", "images.unsplash.com"],
+    domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com", "wkoiwoqfpylszldyhdtl.supabase.co"],
   },
   experimental: {
     appDir: true,

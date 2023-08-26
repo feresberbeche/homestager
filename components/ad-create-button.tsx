@@ -30,7 +30,6 @@ export function AdCreateButton({
         name: "Untitled Ad",
       }),
     })
-    console.log('response', response)
     setIsLoading(false)
 
     if (!response?.ok) {

@@ -4,12 +4,13 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Ad } from "@/types/main"
+
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { AdImage } from "@/components/ad-image"
+
 import * as z from "zod"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import "@/styles/editor.css"
 import { cn } from "@/lib/utils"
@@ -18,8 +19,6 @@ import { buttonVariants } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import TextareaAutosize from "react-textarea-autosize"
-import Image from "next/image"
 
 type FormData = z.infer<typeof postPatchSchema>
 
@@ -77,7 +76,7 @@ export function Modeler({ user, ad, rooms }) {
 
   }
 
-  async function onSubmit(fdata: FormData) {
+  async function upload() {
 
     const picture = selectedFiles[0]
     const imagename = (Math.random() + 1).toString(36).substring(7);
@@ -112,82 +111,62 @@ export function Modeler({ user, ad, rooms }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onClick)}>
-        <div className="flex w-full items-center justify-between">
-          <div className="flex items-center space-x-10">
-            <Link
-              href="/dashboard"
-              className={cn(buttonVariants({ variant: "ghost" }))}
-            >
-              <>
-                <Icons.chevronLeft className="mr-2 h-4 w-4" />
-                Back
-              </>
-            </Link>
-          </div>
-          <button type="submit" className={cn(buttonVariants())}>
+      <div className="flex w-full items-center justify-between">
+        <div className="flex items-center space-x-10">
+          <Link
+            href="/dashboard"
+            className={cn(buttonVariants({ variant: "ghost" }))}
+          >
+            <>
+              <Icons.chevronLeft className="mr-2 h-4 w-4" />
+              Back
+            </>
+          </Link>
+        </div>
+      </div>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <form onSubmit={handleSubmit(onClick)} className="grid grid-cols-12 grid-rows-1 gap-3" >
+          <Input
+            autoFocus
+            id="title"
+            defaultValue={ad.name}
+            placeholder="Ad name"
+            className="col-span-2 w-full resize-none tracking-tight appearance-none overflow-hidden bg-transparent   focus:outline-none"
+            {...register("title")}
+          />
+          <button type="submit" className={'col-span-1 ' + cn(buttonVariants())}>
             {isSaving && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            <span>Save</span>
+            <span>Update</span>
           </button>
+        </form >
+        <div className="grid grid-cols-12 gap-3">
+          <Input className="col-span-3" id="picture" type="file" multiple accept=".jpg,.png" onChange={changeHandler} />
+          <Button onClick={upload} className="col-span-1 " type="submit">Upload</Button>
         </div>
-      </form>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid w-full gap-10">
-          <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert">
-            <TextareaAutosize
-              autoFocus
-              id="title"
-              defaultValue={ad.name}
-              placeholder="Post title"
-              className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
-              {...register("title")}
-            />
+      </div >
+      <div>
+        {rooms?.length ? (
+          <div className="grid grid-cols-6 content-center	 gap-4 divide-y divide-border rounded-md border">
+            {rooms.map((room) => (
+              <AdImage
+                room={room}
+              />
+            ))}
           </div>
-          <div className="prose prose-stone mx-auto dark:prose-invert">
-            <div className="grid w-full lg:max-w-sm items-center gap-1.5">
-              <Input id="picture" type="file" multiple accept=".jpg,.png" onChange={changeHandler} />
-              <Button type="submit">Upload</Button>
-            </div>
-          </div>
-          <Image
+        ) : (
+          <EmptyPlaceholder>
+            <EmptyPlaceholder.Icon name="post" />
+            <EmptyPlaceholder.Title>No photos uploaded</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Description>
+              You don&apos;t have any photos yet. Start uploading.
+            </EmptyPlaceholder.Description>
+          </EmptyPlaceholder>
+        )}
+      </div>
 
 
-            src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
-            alt="Photo by Drew Beamer"
-            loading="lazy"
-            height={500}
-            width={500}
-            className="rounded-md object-cover"
-          />
-          <div>
-            {rooms?.length ? (
-              <div className="divide-y divide-border rounded-md border">
-                {rooms.map((room) => (
-                  <Image
-                    src={room}
-                    alt="Photo by Drew Beamer"
-                    loading="lazy"
-                    height={500}
-                    width={500}
-                    className="rounded-md object-cover"
-                  />
-                ))}
-              </div>
-            ) : (
-              <EmptyPlaceholder>
-                <EmptyPlaceholder.Icon name="post" />
-                <EmptyPlaceholder.Title>No photos uploaded</EmptyPlaceholder.Title>
-                <EmptyPlaceholder.Description>
-                  You don&apos;t have any photos yet. Start uploading.
-                </EmptyPlaceholder.Description>
-              </EmptyPlaceholder>
-            )}
-          </div>
-
-        </div>
-      </form>
     </>
   )
 }
