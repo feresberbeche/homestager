@@ -3,7 +3,7 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
 import * as z from "zod"
 
 import { Database } from "@/types/db"
-import { postPatchSchema } from "@/lib/validations/post"
+import { adPatchSchema } from "@/lib/validations/ad"
 
 const routeContextSchema = z.object({
   params: z.object({
@@ -57,15 +57,14 @@ export async function PATCH(
 
     // Get the request body and validate it.
     const json = await req.json()
-    const body = postPatchSchema.parse(json)
+    const body = adPatchSchema.parse(json)
 
     // Update the post.
     // TODO: Implement sanitization for content.
     await supabase
-      .from("posts")
+      .from("ads")
       .update({
-        title: body.title,
-        content: body.content,
+        name: body.name,
       })
       .eq("id", params.adId)
       .select()

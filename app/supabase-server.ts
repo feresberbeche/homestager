@@ -3,7 +3,7 @@ import { cookies } from "next/headers"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
 
 import { Database } from "@/types/db"
-import { Post, User } from "@/types/main"
+import { Ad, User } from "@/types/main"
 
 export const createServerSupabaseClient = cache(() =>
   createServerComponentClient<Database>({ cookies })
@@ -46,7 +46,7 @@ export async function getUser() {
   }
 }
 
-export async function getAdForUser(adId: Post["id"], userId: User["id"]) {
+export async function getAdForUser(adId: Ad["id"], userId: User["id"]) {
   const supabase = createServerSupabaseClient()
   const { data } = await supabase
     .from("ads")
@@ -56,3 +56,22 @@ export async function getAdForUser(adId: Post["id"], userId: User["id"]) {
     .single()
   return data ? { ...data, content: data.content as unknown as JSON } : null
 }
+
+export async function getRoomsForAd(adId: Ad["id"], userId: User["id"]) {
+  const supabase = createServerSupabaseClient()
+  const { data } = await supabase
+    .storage
+    .from('rooms')
+    .list(userId + '/' + adId, {
+      limit: 100,
+      offset: 0,
+    })
+  return data ? data : null
+}
+
+
+export async function getRoomUrl(adId: Ad["id"], userId: User["id"]) {
+  const supabase = createServerSupabaseClient()
+  //TODO
+}
+
